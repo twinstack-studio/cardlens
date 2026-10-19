@@ -1,73 +1,68 @@
 # CardLens
 
-[![License: All rights reserved](https://img.shields.io/badge/License-All_rights_reserved-555.svg)](./LICENSE)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Open-0a7.svg)](https://cardlens.twinstackstudio.com)
+Credit card portfolio analytics for 10,293 cardholders across 53 weekly statements. CardLens
+cleans the raw data, finds where the revenue really comes from, tests what can and cannot be
+predicted, and gives the bank's teams a dashboard, a collections queue and a weekly report.
 
-**Data analytics & BI**
+**Live:** https://cardlens.twinstackstudio.com
 
-Credit card portfolio analytics for 10,293 cardholders across 53 weekly statements. CardLens cleans the raw data, models it in PostgreSQL, tests it with statistics and machine learning, and turns it into a dashboard that shows where the revenue comes from and what the bank should do next.
-
-[**Open the live demo**](https://cardlens.twinstackstudio.com) · [**Work with TwinStack Studio**](https://twinstackstudio.com/contact)
-
-![CardLens overview with the headline "$56.5M in revenue. Where it really comes from." above four findings: 83% of revenue from Blue cards, 94% from five states, spend follows income, and delinquency is not predictable.](./assets/cardlens-overview.png)
-
-> **Note:** The data is a public training dataset with fictional customers, not a real bank. Each customer appears in only one week, so it is a snapshot rather than a full transaction history.
+![CardLens overview](./assets/cardlens-overview.png)
 
 ## What it does
 
-- Python ETL with 13 data quality checks, every fix logged, loaded into a PostgreSQL star schema
-- SQL analysis views with window functions: week-over-week change, cumulative revenue, 4-week moving average and state rankings
-- Finds that Blue cards bring 83% of revenue and 5 states bring 94%, while Silver, Gold and Platinum earn 1.7 to 3.4 times more per card
-- An honest delinquency test: 20 corrected statistical tests and two models checked against shuffled labels show the data cannot predict it
-- K-means splits customers into 5 behaviour segments and picks 1,736 Blue cardholders who already look like Silver
-- Interactive dashboard where every chart filters every other chart, with a US map, risk view and CSV export
-- A matching Power BI version with all DAX measures and a build guide
+- **Overview** — revenue, spend, interest and bank income week by week; every chart filters
+  every other chart (tier, quarter, last 8 weeks, a state on the map).
+- **Findings** — Blue cards bring 83% of revenue and 5 states bring 94%, while Silver, Gold
+  and Platinum earn 1.7 to 3.4 times more per card; spend follows income.
+- **Customers** — who holds the cards: income, age, gender, job, satisfaction, a US state map.
+- **Segments** — five kinds of cardholder by how they use the card (premium spenders,
+  revolvers, underused high limits, pay-in-full small limits, budget customers), with what
+  to do for each.
+- **Risk** — an honest delinquency test: 20 corrected checks and two scores tested against
+  random guessing show this data cannot predict who goes delinquent, and the page says so.
+- **Collections queue** — all 624 delinquent accounts, biggest balance first. Assign an
+  agent, log calls, record a promise to pay or a payment; every step has a history that can
+  be undone. CSV export and a printable call list.
+- **Management report** — the weekly or quarterly numbers the card business reviews, with
+  change against the previous period, spend by category, tiers and top states; CSV and print.
+- **Opportunities** — 1,736 Blue cardholders who already behave like Silver customers.
+- **Data** — how the raw files were checked (13 quality checks, every fix logged) and the
+  questions behind every chart.
+- A matching Power BI report with all measures and a build guide. The layout and type scale
+  from a 320 px phone to a 2560 px screen.
 
-## Screenshots
+![Collections queue](./assets/cardlens-collections.png)
 
-| Customers | Segments |
+| Management report | Customers |
 | --- | --- |
-| ![Customers](./assets/cardlens-1.png) | ![Segments](./assets/cardlens-2.png) |
+| ![Management report](./assets/cardlens-reports.png) | ![Customers](./assets/cardlens-customers.png) |
 
-| Risk | Opportunities |
+| Segments | Risk |
 | --- | --- |
-| ![Risk](./assets/cardlens-3.png) | ![Opportunities](./assets/cardlens-4.png) |
+| ![Segments](./assets/cardlens-segments.png) | ![Risk](./assets/cardlens-risk.png) |
 
+## The data, honestly
 
-## Technology
-
-| Layer | Stack |
-| --- | --- |
-| Data & ML | Python, pandas, SciPy, scikit-learn |
-| Database | PostgreSQL, SQL window functions |
-| Frontend | React, Vite, Tailwind CSS, Framer Motion |
-| BI | Power BI, DAX |
+The data is a public training dataset with fictional customers, not a real bank. Each
+customer appears in only one week, so it is a snapshot rather than a full transaction
+history. Collections notes in the demo are kept in the viewer's own browser.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  RAW[Raw weekly statements<br/>10,293 cardholders] --> ETL[Python ETL<br/>13 quality checks, fixes logged]
-  ETL --> PG[(PostgreSQL<br/>star schema)]
-  PG --> V[SQL views<br/>window functions]
-  PG --> ML[Statistics + ML<br/>tests · K-means segments]
-  V --> D[Dashboard data]
-  ML --> D
-  D --> UI[React dashboard<br/>cross-filtering · US map · CSV]
-  PG --> PBI[Power BI report<br/>DAX measures]
+  RAW[Raw weekly statements<br/>10,293 cardholders] --> ETL[Cleaning<br/>13 quality checks, fixes logged]
+  ETL --> DB[(Reporting database<br/>star schema)]
+  DB --> Q[Report queries<br/>weekly change · rankings]
+  DB --> ST[Statistics<br/>tests · segments]
+  Q --> D[Dashboard data]
+  ST --> D
+  D --> UI[Web dashboard<br/>overview · collections · reports]
+  DB --> PBI[Power BI report]
 ```
 
 ## Source code
 
 This is the public showcase. The source code is kept in a private repository. Try the live demo above, and [contact TwinStack Studio](https://twinstackstudio.com/contact) for a walkthrough or a similar project.
-
-## Built by TwinStack Studio
-
-TwinStack Studio builds full-stack websites, web applications, mobile apps,
-dashboards, portals, automation, and AI-powered products.
-
-[GitHub](https://github.com/twinstack-studio) ·
-[Website](https://twinstackstudio.com) ·
-[Email](mailto:hello@twinstackstudio.com)
 
 © 2026 TwinStack Studio. All rights reserved. See [LICENSE](./LICENSE).
